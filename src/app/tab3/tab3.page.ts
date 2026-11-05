@@ -1,10 +1,12 @@
 
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem,
-  IonLabel, IonButton, IonIcon, IonBadge, IonThumbnail
+  IonLabel, IonButton, IonIcon, IonBadge, IonThumbnail, IonButtons
 } from '@ionic/angular';
 import { ApiService } from '../services/api';
 import { StorageService } from '../services/storage';
@@ -20,7 +22,7 @@ import { bookmark } from 'ionicons/icons';
   imports: [
     CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle,
     IonContent, IonList, IonItem, IonLabel, IonButton, IonIcon,
-    IonBadge, IonThumbnail
+    IonBadge, IonThumbnail, IonButtons
   ]
 })
 export class Tab3Page {
@@ -29,7 +31,9 @@ export class Tab3Page {
   constructor(
     private apiService: ApiService,
     private storage: StorageService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
     addIcons({ bookmark });
   }
@@ -78,5 +82,18 @@ export class Tab3Page {
   async desmarcar(incidentId: string) {
     await this.storage.toggleTracking(incidentId);
     await this.loadTracked();
+  }
+
+  async cerrarSesion() {
+    try {
+      await this.authService.cerrarSesion();
+
+      await this.router.navigateByUrl('/login', {
+        replaceUrl: true
+      });
+
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
   }
 }

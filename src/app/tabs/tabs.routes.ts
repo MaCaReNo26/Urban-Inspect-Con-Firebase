@@ -1,11 +1,13 @@
 import type { Routes } from '@angular/router';
 
 import { TabsPage } from './tabs.page';
+import { authGuard } from '../services/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
+    canActivate: [authGuard],
     children: [
       {
         path: 'tab1',

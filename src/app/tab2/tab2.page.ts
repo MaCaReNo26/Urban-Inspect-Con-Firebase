@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
   IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, 
   IonInput, IonSelect, IonSelectOption, IonButton, IonIcon, 
-  IonTextarea, ToastController, AlertController, IonCard, IonCardContent , IonText
+  IonTextarea, ToastController, AlertController, IonCard, IonCardContent , IonText, IonButtons
+  
 } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
@@ -22,7 +25,7 @@ import { cameraOutline, locationOutline, saveOutline, trashOutline } from 'ionic
   imports: [
     CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle, IonContent,
     IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonButton, 
-    IonIcon, IonTextarea, IonCard, IonCardContent, IonText
+    IonIcon, IonTextarea, IonCard, IonCardContent, IonText, IonButtons
   ]
 })
 export class Tab2Page implements OnInit {
@@ -44,7 +47,9 @@ export class Tab2Page implements OnInit {
     private apiService: ApiService,
     private storage: StorageService,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private authService: AuthService,
+    private router: Router
   ) {
     addIcons({ cameraOutline, locationOutline, saveOutline, trashOutline });
   }
@@ -170,5 +175,18 @@ export class Tab2Page implements OnInit {
   async showToast(msg: string) {
     const toast = await this.toastCtrl.create({ message: msg, duration: 3000, position: 'bottom' });
     toast.present();
+  }
+
+  async cerrarSesion() {
+    try {
+      await this.authService.cerrarSesion();
+
+      await this.router.navigateByUrl('/login', {
+        replaceUrl: true
+      });
+
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
   }
 }

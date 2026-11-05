@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel,
   IonBadge, IonInfiniteScroll, IonInfiniteScrollContent, IonButton, IonIcon,
-  IonSpinner, ModalController, IonThumbnail, IonText, IonRefresher, IonRefresherContent
+  IonSpinner, ModalController, IonThumbnail, IonText, IonRefresher, IonRefresherContent, IonButtons
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { bookmark, bookmarkOutline, eyeOutline } from 'ionicons/icons';
@@ -22,7 +24,7 @@ import { DetalleIncidenciaComponent } from '../components/detalle-incidencia/det
     CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle, IonContent,
     IonList, IonItem, IonLabel, IonBadge, IonInfiniteScroll,
     IonInfiniteScrollContent, IonButton, IonIcon, IonSpinner, IonThumbnail, IonText,
-    IonRefresher, IonRefresherContent
+    IonRefresher, IonRefresherContent, IonButtons
   ]
 })
 export class Tab1Page implements OnInit {
@@ -36,7 +38,9 @@ export class Tab1Page implements OnInit {
     private apiService: ApiService,
     private storage: StorageService,
     private modalCtrl: ModalController,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
     addIcons({ bookmark, bookmarkOutline, eyeOutline });
   }
@@ -158,4 +162,17 @@ export class Tab1Page implements OnInit {
     });
     await modal.present();
   }
+  async cerrarSesion() {
+    try {
+      await this.authService.cerrarSesion();
+
+      await this.router.navigateByUrl('/login', {
+        replaceUrl: true
+      });
+
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  }
 }
+

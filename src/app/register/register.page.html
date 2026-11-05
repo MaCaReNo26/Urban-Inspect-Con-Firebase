@@ -1,0 +1,73 @@
+<ion-content class="ion-padding">
+
+  <div class="register-container">
+
+    <div class="register-header">
+      <h1>UrbanInspect</h1>
+      <p>Crear una nueva cuenta</p>
+    </div>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Registro</ion-card-title>
+        <p>Ingrese sus datos para registrarse.</p>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <ion-item>
+          <ion-input
+            label="Correo electrónico"
+            labelPlacement="floating"
+            type="email"
+            [(ngModel)]="email">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Contraseña"
+            labelPlacement="floating"
+            type="password"
+            [(ngModel)]="password">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Confirmar contraseña"
+            labelPlacement="floating"
+            type="password"
+            [(ngModel)]="confirmarPassword">
+          </ion-input>
+        </ion-item>
+
+        <ion-text color="danger" *ngIf="mensaje">
+          <p>{{ mensaje }}</p>
+        </ion-text>
+
+        <ion-button
+          expand="block"
+          (click)="registrar()"
+          [disabled]="cargando">
+
+          {{ cargando ? 'Registrando...' : 'Crear cuenta' }}
+
+        </ion-button>
+
+        <div class="register-link">
+          <p>¿Ya tienes una cuenta?</p>
+
+          <ion-button
+            fill="clear"
+            routerLink="/login">
+            Iniciar sesión
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>
